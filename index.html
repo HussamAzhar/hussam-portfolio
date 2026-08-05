@@ -327,8 +327,9 @@
     <div class="sec-head reveal">
       <div class="head-copy">
         <span class="eyebrow">Selected Work</span>
-        <h2 id="proj-h">Products I've helped ship.</h2>
-        <p>A cross-section — desktop CAD software, licensing platforms and full-stack web builds.</p>
+        <h2 id="proj-h">Licensing, payments &amp; the products behind them.</h2>
+        <p>Production licensing, DRM and subscription-billing systems — plus the desktop CAD software and full-stack web builds they power.</p>
+        <p>Across IMSI Design's product line I've owned the full licensing &amp; payments stack: key generation and validation, JWT-based auth, floating-license workflows, webhook-driven email notifications, and subscription renewal via Braintree &amp; PayPal — wired into both in-app purchase flows and WooCommerce.</p>
       </div>
       <span class="sec-index">SEC.04 / PROJECTS</span>
     </div>
@@ -336,11 +337,38 @@
     <div class="proj-grid">
 
       <article class="proj-card glass reveal">
-        <div class="proj-thumb t-g1"><img src="assets/img/TPS_MAC.png" alt="The Print Shop for Mac thumbnail" loading="lazy"></div>
+        <div class="proj-thumb t-g3"><img src="assets/img/DRM_2.png" alt="DRM thumbnail" loading="lazy"><span class="mono-mark">DRM</span></div>
         <div class="proj-body">
           <div class="proj-top"><span class="proj-idx">PRJ.01</span><span class="proj-co">IMSI Technologies</span></div>
+          <h3>iDRM Portal</h3>
+          <p>Digital Rights Management &amp; licensing portal for IMSI Design, built from scratch and still in production — currently managing <strong>~4,321,431 license keys</strong> across <strong>~352,273 customers</strong>. Handles key generation and validation, a JWT-secured REST API, webhook-driven email notifications, and an admin dashboard surfacing live sales and refund stats.</p>
+          <p><em>Flow:</em> customer purchase → key generated &amp; issued via REST API → client app validates against the portal (JWT) → renewal/refund events fire webhooks → automated email notifications via cron-scheduled drip jobs.</p>
+          <div class="proj-tags"><span class="chip">PHP 8</span><span class="chip">MySQL</span><span class="chip">JWT</span><span class="chip">REST APIs</span><span class="chip">Webhooks</span><span class="chip">PHPMailer</span><span class="chip">Bootstrap</span></div>
+          <div class="proj-actions">
+            <a class="btn sm solid" href="https://drive.google.com/file/d/1WCtU_GPOAF4ZE0oR8mQWsZjGR6Ov3xmm/view?usp=sharing" target="_blank" rel="noopener">Internal · IMSI Design <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card glass reveal d1">
+        <div class="proj-thumb t-g4"><img src="assets/img/TCAD.png" alt="TurboCAD thumbnail" loading="lazy"></div>
+        <div class="proj-body">
+          <div class="proj-top"><span class="proj-idx">PRJ.02</span><span class="proj-co">IMSI Technologies</span></div>
+          <h3>TurboCAD — Windows</h3>
+          <p>Professional 2D/3D CAD with hundreds of drawing tools, photorealistic rendering and broad file support. Developed the C++ DRM client SDK that talks to the iDRM Portal, implemented the floating-license workflow for seat-sharing across a customer's machines, and integrated Braintree/PayPal for in-app subscription renewal.</p>
+          <div class="proj-tags"><span class="chip">C++</span><span class="chip">DRM SDK</span><span class="chip">Braintree</span><span class="chip">PayPal</span><span class="chip">Floating Licensing</span></div>
+          <div class="proj-actions">
+            <a class="btn sm solid" href="https://www.imsidesign.com/products/turbocad/turbocad-windows" target="_blank" rel="noopener">View product <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card glass reveal d2">
+        <div class="proj-thumb t-g1"><img src="assets/img/TPS_MAC.png" alt="The Print Shop for Mac thumbnail" loading="lazy"></div>
+        <div class="proj-body">
+          <div class="proj-top"><span class="proj-idx">PRJ.03</span><span class="proj-co">IMSI Technologies</span></div>
           <h3>The Print Shop for Mac</h3>
-          <p>Desktop design studio with 10,000+ royalty-free backgrounds and 400+ templates, plus photo-editing tools to crop, colour-correct and elevate personal designs. Owned the front-end, SQLite schema, Node back-end and Mac App Store submission.</p>
+          <p>Desktop design studio with 10,000+ royalty-free backgrounds and 400+ templates, plus photo-editing tools to crop, colour-correct and elevate personal designs. Owned the front-end, SQLite schema, Node back-end, license validation against the iDRM Portal, and the Mac App Store submission.</p>
           <div class="proj-tags"><span class="chip">React</span><span class="chip">Redux</span><span class="chip">TypeScript</span><span class="chip">Material-UI</span><span class="chip">Electron</span><span class="chip">SQLite</span><span class="chip">Node.js</span></div>
           <div class="proj-actions">
             <a class="btn sm solid" href="https://www.encore.com/the-print-shop-for-macintosh" target="_blank" rel="noopener">View product <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
@@ -348,41 +376,15 @@
         </div>
       </article>
 
-      <article class="proj-card glass reveal d1">
+      <article class="proj-card glass reveal d3">
         <div class="proj-thumb t-g2"><img src="assets/img/PM_V9.png" alt="PrintMaster v9 thumbnail" loading="lazy"></div>
         <div class="proj-body">
-          <div class="proj-top"><span class="proj-idx">PRJ.02</span><span class="proj-co">IMSI Technologies</span></div>
+          <div class="proj-top"><span class="proj-idx">PRJ.04</span><span class="proj-co">IMSI Technologies</span></div>
           <h3>PrintMaster v9 — Win &amp; Mac</h3>
-          <p>Cross-platform creative suite for cards, invitations, calendars and brochures with thousands of royalty-free templates. Built the React front-end and .NET Core + ElectronNET back-end, the SQLite layer and the Swift printing module.</p>
+          <p>Cross-platform creative suite for cards, invitations, calendars and brochures with thousands of royalty-free templates. Built the React front-end and .NET Core + ElectronNET back-end, the SQLite layer, license activation against the iDRM Portal, and the Swift printing module.</p>
           <div class="proj-tags"><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">.NET Core 2.2</span><span class="chip">ElectronNET</span><span class="chip">SQLite</span><span class="chip">Swift</span></div>
           <div class="proj-actions">
             <a class="btn sm solid" href="https://www.encore.com/printmaster-v9" target="_blank" rel="noopener">View product <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-          </div>
-        </div>
-      </article>
-
-      <article class="proj-card glass reveal d2">
-        <div class="proj-thumb t-g3"><img loading="lazy"><span class="mono-mark">DRM</span></div>
-        <div class="proj-body">
-          <div class="proj-top"><span class="proj-idx">PRJ.03</span><span class="proj-co">IMSI Technologies</span></div>
-          <h3>iDRM Portal</h3>
-          <p>Digital Rights Management portal for IMSI Design — manages licensing for all products, generates product keys, tracks active customers and surfaces stats on sales and refunds. Full-stack build with REST APIs, JWT auth, webhooks and email intimation.</p>
-          <div class="proj-tags"><span class="chip">PHP 8</span><span class="chip">MySQL</span><span class="chip">JWT</span><span class="chip">REST APIs</span><span class="chip">PHPMailer</span><span class="chip">Bootstrap</span></div>
-          <div class="proj-actions">
-            <span class="btn sm na">Internal · IMSI Design</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="proj-card glass reveal d3">
-        <div class="proj-thumb t-g4"><img src="assets/img/TCAD.png" alt="TurboCAD thumbnail" loading="lazy"></div>
-        <div class="proj-body">
-          <div class="proj-top"><span class="proj-idx">PRJ.04</span><span class="proj-co">IMSI Technologies</span></div>
-          <h3>TurboCAD — Windows</h3>
-          <p>Professional 2D/3D CAD with hundreds of drawing tools, photorealistic rendering and broad file support. Developed the C++ DRM client SDK, implemented the floating-license workflow and integrated Braintree/PayPal for in-app subscription renewal.</p>
-          <div class="proj-tags"><span class="chip">C++</span><span class="chip">DRM SDK</span><span class="chip">Braintree</span><span class="chip">PayPal</span><span class="chip">Licensing</span></div>
-          <div class="proj-actions">
-            <a class="btn sm solid" href="https://www.imsidesign.com/products/turbocad/turbocad-windows" target="_blank" rel="noopener">View product <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
           </div>
         </div>
       </article>
