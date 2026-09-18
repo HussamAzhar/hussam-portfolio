@@ -231,19 +231,29 @@
   document.querySelectorAll('.skill-row').forEach(function (s) { skillIo.observe(s); });
 
   /* ---------------------------------------------------------------------
-     PROJECT CARD TILT (subtle, disabled for touch / reduced motion)
+     PROJECT FLIP CARDS
+     Desktop: CSS :hover / :focus-within handles the flip.
+     Touch:   tap the card to flip; tap again (or an outside card) to flip back.
+     Keyboard: Enter / Space toggles the flip.
   --------------------------------------------------------------------- */
   var isTouch = window.matchMedia && window.matchMedia('(hover: none)').matches;
-  if (!reduceMotion && !isTouch) {
-    document.querySelectorAll('.proj-card').forEach(function (card) {
-      card.addEventListener('mousemove', function (e) {
-        var r = card.getBoundingClientRect();
-        var px = (e.clientX - r.left) / r.width - 0.5;
-        var py = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = 'perspective(900px) rotateY(' + (px * 6) + 'deg) rotateX(' + (py * -6) + 'deg) translateY(-4px)';
-      });
-      card.addEventListener('mouseleave', function () {
-        card.style.transform = '';
+  var projCards = document.querySelectorAll('.proj-card');
+
+  projCards.forEach(function (card) {
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        card.classList.toggle('flipped');
+      }
+    });
+  });
+
+  if (isTouch) {
+    projCards.forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('a')) return; // let action links work
+        projCards.forEach(function (c) { if (c !== card) c.classList.remove('flipped'); });
+        card.classList.toggle('flipped');
       });
     });
   }
@@ -342,6 +352,39 @@
       toast.classList.add('show');
       setTimeout(function () { toast.classList.remove('show'); }, 4200);
       form.reset();
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     WHATSAPP — Click-to-Chat API (wa.me) integration
+     One source of truth for the number + default message; every WhatsApp
+     entry point (contact card, contact socials, footer, sticky button)
+     is wired here, and the contact form can hand its fields to WhatsApp.
+  --------------------------------------------------------------------- */
+  var WA = {
+    number: '923074572916', // international format — no +, spaces or dashes
+    base: 'https://wa.me/',
+    greeting: 'Hi Hussam, I found your portfolio and would like to connect about an opportunity.'
+  };
+  function waLink(text) {
+    var msg = (text && text.trim()) ? text.trim() : WA.greeting;
+    return WA.base + WA.number + '?text=' + encodeURIComponent(msg);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('a[data-wa]'), function (a) {
+    a.setAttribute('href', waLink());
+  });
+  var waSend = document.getElementById('waSend');
+  if (waSend && form) {
+    waSend.addEventListener('click', function () {
+      var name = form.name.value.trim();
+      var email = form.email.value.trim();
+      var subject = form.subject.value.trim();
+      var msg = form.message.value.trim();
+      var lines = [name ? ('Hi Hussam, this is ' + name + '.') : 'Hi Hussam,'];
+      if (subject) lines.push('Re: ' + subject);
+      if (msg) lines.push('', msg);
+      if (email) lines.push('', 'You can also reach me at ' + email + '.');
+      window.open(waLink(lines.join('\n')), '_blank', 'noopener');
     });
   }
 
