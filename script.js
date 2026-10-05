@@ -231,6 +231,86 @@
   document.querySelectorAll('.skill-row').forEach(function (s) { skillIo.observe(s); });
 
   /* ---------------------------------------------------------------------
+     TOOLS & TECH MARQUEE — two rows of icon pills, scrolling in opposite
+     directions on an infinite CSS loop. Lists are duplicated once so the
+     loop at translateX(-50%) is seamless.
+  --------------------------------------------------------------------- */
+  var CLAUDE_MARK =
+    '<svg viewBox="0 0 24 24" fill="currentColor">' +
+    [0, 45, 90, 135, 180, 225, 270, 315].map(function (deg) {
+      return '<rect x="10.9" y="1.4" width="2.2" height="7.2" rx="1.1" transform="rotate(' + deg + ' 12 12)"/>';
+    }).join('') +
+    '</svg>';
+
+  var TOOLS_ROW_1 = [
+    { l: 'React.js', i: 'fa-brands fa-react', c: '#61DAFB' },
+    { l: 'Next.js', i: 'fa-solid fa-n', c: '#9B6BFF' },
+    { l: 'Vue.js', i: 'fa-brands fa-vuejs', c: '#42B883' },
+    { l: 'TypeScript', i: 'fa-solid fa-t', c: '#3178C6' },
+    { l: 'JavaScript', i: 'fa-brands fa-js', c: '#F0DB4F' },
+    { l: 'Node.js', i: 'fa-brands fa-node-js', c: '#68A063' },
+    { l: 'Express.js', i: 'fa-solid fa-route', c: '#5B8CFF' },
+    { l: 'PHP', i: 'fa-brands fa-php', c: '#8892BF' },
+    { l: 'Laravel', i: 'fa-brands fa-laravel', c: '#FF2D20' },
+    { l: 'Python', i: 'fa-brands fa-python', c: '#FFD43B' },
+    { l: 'C++', i: 'fa-solid fa-c', c: '#9B6BFF' },
+    { l: 'C# / .NET', i: 'fa-brands fa-microsoft', c: '#7C5CFC' },
+    { l: 'HTML5', i: 'fa-brands fa-html5', c: '#E34F26' },
+    { l: 'CSS3', i: 'fa-brands fa-css3-alt', c: '#2E9FD6' },
+    { l: 'Bootstrap', i: 'fa-brands fa-bootstrap', c: '#9B7BFF' },
+    { l: 'jQuery', i: 'fa-solid fa-code', c: '#2E9FD6' },
+    { l: 'Material UI', i: 'fa-solid fa-palette', c: '#3EE6C4' },
+    { l: 'Redux', i: 'fa-solid fa-diagram-project', c: '#9B6BFF' },
+    { l: 'Electron.js', i: 'fa-solid fa-bolt', c: '#FFB454' },
+    { l: 'Swift', i: 'fa-brands fa-swift', c: '#FF6B6B' },
+    { l: 'Claude', svg: CLAUDE_MARK, c: '#D97757', claude: true }
+  ];
+
+  var TOOLS_ROW_2 = [
+    { l: 'MySQL', i: 'fa-solid fa-database', c: '#5B8CFF' },
+    { l: 'MS SQL Server', i: 'fa-solid fa-database', c: '#FF6B6B' },
+    { l: 'MongoDB', i: 'fa-solid fa-leaf', c: '#3EE6C4' },
+    { l: 'SQLite', i: 'fa-solid fa-database', c: '#5B8CFF' },
+    { l: 'Firebase', i: 'fa-solid fa-fire', c: '#FFB454' },
+    { l: 'Google Cloud', i: 'fa-brands fa-google', c: '#5B8CFF' },
+    { l: 'BigQuery', i: 'fa-solid fa-chart-column', c: '#5B8CFF' },
+    { l: 'Pub/Sub', i: 'fa-solid fa-tower-broadcast', c: '#3EE6C4' },
+    { l: 'Docker', i: 'fa-brands fa-docker', c: '#5B8CFF' },
+    { l: 'Nginx', i: 'fa-solid fa-server', c: '#3EE6C4' },
+    { l: 'GitHub Actions', i: 'fa-brands fa-github', c: '#9B6BFF' },
+    { l: 'MS Azure', i: 'fa-brands fa-microsoft', c: '#5B8CFF' },
+    { l: 'Git', i: 'fa-brands fa-git-alt', c: '#FF6B6B' },
+    { l: 'SmartGit', i: 'fa-solid fa-code-branch', c: '#FF6B6B' },
+    { l: 'Visual Studio', i: 'fa-brands fa-microsoft', c: '#9B6BFF' },
+    { l: 'VS Code', i: 'fa-solid fa-code', c: '#5B8CFF' },
+    { l: 'Azure DevOps / TFS', i: 'fa-brands fa-microsoft', c: '#5B8CFF' },
+    { l: 'JIRA', i: 'fa-brands fa-jira', c: '#5B8CFF' },
+    { l: 'Postman', i: 'fa-solid fa-paper-plane', c: '#FFB454' },
+    { l: 'Figma', i: 'fa-brands fa-figma', c: '#FF6B6B' },
+    { l: 'Fiddler', i: 'fa-solid fa-network-wired', c: '#9B6BFF' },
+    { l: 'WinSCP', i: 'fa-solid fa-folder-tree', c: '#5B8CFF' },
+    { l: 'XAMPP', i: 'fa-solid fa-layer-group', c: '#FFB454' },
+    { l: 'Unity WebGL', i: 'fa-solid fa-cube', c: '#FFB454' },
+    { l: 'Mac App Store', i: 'fa-brands fa-app-store-ios', c: '#5B8CFF' },
+    { l: 'XCode', i: 'fa-brands fa-apple', c: '#9B6BFF' },
+    { l: 'MS Office', i: 'fa-solid fa-briefcase', c: '#FF6B6B' }
+  ];
+
+  function pillHTML(item) {
+    var icon = item.svg ? item.svg : '<i class="' + item.i + '" aria-hidden="true"></i>';
+    return '<span class="tool-pill' + (item.claude ? ' is-claude' : '') + '" style="--c:' + item.c + '">' +
+      '<span class="pi">' + icon + '</span><span>' + item.l + '</span></span>';
+  }
+  function renderMarquee(id, list) {
+    var track = document.getElementById(id);
+    if (!track) return;
+    var html = list.map(pillHTML).join('');
+    track.innerHTML = html + html; // duplicated once → seamless loop at -50%
+  }
+  renderMarquee('marqueeTrack1', TOOLS_ROW_1);
+  renderMarquee('marqueeTrack2', TOOLS_ROW_2);
+
+  /* ---------------------------------------------------------------------
      PROJECT FLIP CARDS
      Desktop: CSS :hover / :focus-within handles the flip.
      Touch:   tap the card to flip; tap again (or an outside card) to flip back.
@@ -362,7 +442,7 @@
      is wired here, and the contact form can hand its fields to WhatsApp.
   --------------------------------------------------------------------- */
   var WA = {
-    number: '923074572916', // international format — no +, spaces or dashes
+    number: '923218803990', // international format — no +, spaces or dashes
     base: 'https://wa.me/',
     greeting: 'Hi Hussam, I found your portfolio and would like to connect about an opportunity.'
   };
